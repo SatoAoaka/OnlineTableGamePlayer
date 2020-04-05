@@ -6,4 +6,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OpenCvSharp4" Version="4.3.0.20200405" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.3.0.20200405" />
+  </ItemGroup>
+
 </Project>
