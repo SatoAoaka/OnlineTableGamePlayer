@@ -13,7 +13,7 @@ namespace OnlineTableGamePlayer.Model
         internal static Bitmap CaptureImage()
         {
           Mat frame;
-          using(VideoCapture capture = new VideoCapture(1))
+          using(VideoCapture capture = new VideoCapture(0))
             {
                 frame = new Mat(capture.FrameHeight, capture.FrameWidth, MatType.CV_8UC3);
                 capture.Grab();

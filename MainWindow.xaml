@@ -24,7 +24,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Image Grid.Row="1" Source="{Binding MyAreaImage}"/>
+            <Image Name="myImageArea" Grid.Row="1" Source="{Binding MyAreaImage}"/>
 
         </Grid>
 
