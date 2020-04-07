@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using OnlineTableGamePlayer.Command;
 using OnlineTableGamePlayer.Model;
+
 
 
 namespace OnlineTableGamePlayer.ViewModel
@@ -16,7 +19,7 @@ namespace OnlineTableGamePlayer.ViewModel
     internal class MainWindowViewModel : ViewModelBase
     {
         private ImageSource _myAreaImage;
-
+        private ImageSource myAreaGetter;
         public ICommand UpdateImageCommand { get; }
 
         #region プロパティ
@@ -33,12 +36,44 @@ namespace OnlineTableGamePlayer.ViewModel
 
         public MainWindowViewModel()
         {
-            UpdateImageCommand = new UpdateImageCommand(Update);
+            AutoUpdate();            
+        }
+
+        private void AutoUpdate()
+        {
+            var timer = new DispatcherTimer(DispatcherPriority.Normal)
+            {
+                Interval = TimeSpan.FromSeconds(0.03),
+            };
+
+            System.Threading.SemaphoreSlim semaphore
+              = new System.Threading.SemaphoreSlim(1, 1);
+
+            timer.Tick += async(s, e) =>
+             {
+                 if(!await semaphore.WaitAsync(0)) {
+                     return;
+                 }
+                 try
+                 {
+                     await Task.Run(() => Update());
+                     
+                     MyAreaImage = myAreaGetter;
+                 }
+                 finally
+                 {
+                     semaphore.Release();
+                 }
+             };
+
+            timer.Start();
+
         }
 
         private void Update()
         {
-            MyAreaImage = Imaging.CreateBitmapSourceFromHBitmap(CameraInput.CaptureImage().GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            myAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(CameraInput.CaptureImage().GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            myAreaGetter.Freeze();
         }
     }
 }
