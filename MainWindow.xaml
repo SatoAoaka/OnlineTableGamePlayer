@@ -11,22 +11,29 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    <StackPanel>
+        <Menu>
+            <MenuItem Header="メニュー(_O)">
+                <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定1" />
     
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <Button Content="Test"  />
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Image Name="myImageArea" Grid.Row="1" Source="{Binding MyAreaImage}"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Test"  />
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Image Name="myImageArea" Grid.Row="1" Source="{Binding MyAreaImage}"/>
 
+            </Grid>
         </Grid>
+    </StackPanel>
 
-    </Grid>
 </Window>

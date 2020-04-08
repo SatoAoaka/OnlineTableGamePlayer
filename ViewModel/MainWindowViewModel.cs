@@ -20,7 +20,9 @@ namespace OnlineTableGamePlayer.ViewModel
     {
         private ImageSource _myAreaImage;
         private ImageSource myAreaGetter;
+       
         public ICommand UpdateImageCommand { get; }
+        public ICommand SettingMenuOpenCommand { get; }
 
         #region プロパティ
         public ImageSource MyAreaImage
@@ -36,7 +38,8 @@ namespace OnlineTableGamePlayer.ViewModel
 
         public MainWindowViewModel()
         {
-            AutoUpdate();            
+            AutoUpdate();
+            SettingMenuOpenCommand = new SettingMenuOpenCommand(OpenSettingMenu.OpenSettingMenuWindow);
         }
 
         private void AutoUpdate()
