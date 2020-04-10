@@ -10,17 +10,23 @@ namespace OnlineTableGamePlayer.Model
 {
     class CameraInput
     {
-        internal static Bitmap CaptureImage()
+        internal static Bitmap CaptureImage(int cameraIndex)
         {
           Mat frame;
-          using(VideoCapture capture = new VideoCapture(0))
+          using(VideoCapture capture = new VideoCapture(cameraIndex))
             {
                 frame = new Mat(capture.FrameHeight, capture.FrameWidth, MatType.CV_8UC3);
                 capture.Grab();
                 NativeMethods.videoio_VideoCapture_operatorRightShift_Mat(capture.CvPtr, frame.CvPtr);
             }
-
-            return frame.ToBitmap();
+            if (!frame.Empty())
+            {
+                return frame.ToBitmap();
+            }
+            else
+            {
+                return null;
+            }
         }
 
     }

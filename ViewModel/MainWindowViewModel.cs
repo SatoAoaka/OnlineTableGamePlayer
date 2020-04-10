@@ -18,6 +18,8 @@ namespace OnlineTableGamePlayer.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        private int cameraIndex = Settings.Default.cameraIndex;
+
         private ImageSource _myAreaImage;
         private ImageSource myAreaGetter;
        
@@ -75,8 +77,12 @@ namespace OnlineTableGamePlayer.ViewModel
 
         private void Update()
         {
-            myAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(CameraInput.CaptureImage().GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            myAreaGetter.Freeze();
+            var bitmap = CameraInput.CaptureImage(cameraIndex);
+            if (bitmap != null)
+            {
+                myAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                myAreaGetter.Freeze();
+            }
         }
     }
 }

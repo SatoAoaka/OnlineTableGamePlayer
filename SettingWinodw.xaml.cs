@@ -21,5 +21,10 @@ namespace OnlineTableGamePlayer
         {
             InitializeComponent();
         }
+
+        protected virtual void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Settings.Default.Save();
+        }
     }
 }
