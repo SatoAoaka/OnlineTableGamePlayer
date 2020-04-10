@@ -25,6 +25,7 @@ namespace OnlineTableGamePlayer.ViewModel
        
         public ICommand UpdateImageCommand { get; }
         public ICommand SettingMenuOpenCommand { get; }
+        public ICommand RefreshCommand { get; }
 
         #region プロパティ
         public ImageSource MyAreaImage
@@ -42,6 +43,7 @@ namespace OnlineTableGamePlayer.ViewModel
         {
             AutoUpdate();
             SettingMenuOpenCommand = new SettingMenuOpenCommand(OpenSettingMenu.OpenSettingMenuWindow);
+            RefreshCommand = new RefreshCommand(Refresh);
         }
 
         private void AutoUpdate()
@@ -83,6 +85,11 @@ namespace OnlineTableGamePlayer.ViewModel
                 myAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 myAreaGetter.Freeze();
             }
+        }
+
+        private void Refresh()
+        {
+            cameraIndex = Settings.Default.cameraIndex;
         }
     }
 }

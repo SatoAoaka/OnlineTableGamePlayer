@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Input;
 
 namespace OnlineTableGamePlayer.Command
 {
-    internal class UpdateImageCommand : ICommand
+    class RefreshCommand : ICommand
     {
         #region メンバ変数
         private readonly Action _action;
@@ -14,7 +16,7 @@ namespace OnlineTableGamePlayer.Command
         #endregion
 
         #region コンストラクタ
-        internal UpdateImageCommand(Action action)
+        internal RefreshCommand(Action action)
         {
             this._action = action;
         }
@@ -24,7 +26,7 @@ namespace OnlineTableGamePlayer.Command
         #region メソッド
         public bool CanExecute(object parameter)
         {
-            //動画更新できるかどうかの判断ロジックを作る（予定）
+            //設定の反映をする。常にtrueでいいはず
             return true;
         }
 

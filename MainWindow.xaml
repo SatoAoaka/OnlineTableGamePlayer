@@ -13,9 +13,9 @@
     </Window.DataContext>
     <StackPanel>
         <Menu>
-            <MenuItem Header="メニュー(_O)">
-                <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定1" />
-    
+            <MenuItem Header="メニュー">
+                <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定画面を開く" />
+                <MenuItem Command="{Binding RefreshCommand}" Header="設定を反映" />
             </MenuItem>
         </Menu>
         <Grid>
