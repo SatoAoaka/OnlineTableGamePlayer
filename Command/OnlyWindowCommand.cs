@@ -1,11 +1,14 @@
-﻿using System;
+﻿using OnlineTableGamePlayer.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace OnlineTableGamePlayer.Command
 {
-    class RefreshCommand : ICommand
+    class OnlyWindowCommand : ICommand
     {
         #region メンバ変数
         private readonly Action _action;
@@ -16,7 +19,7 @@ namespace OnlineTableGamePlayer.Command
         #endregion
 
         #region コンストラクタ
-        internal RefreshCommand(Action action)
+        internal OnlyWindowCommand(Action action)
         {
             this._action = action;
         }
@@ -26,8 +29,17 @@ namespace OnlineTableGamePlayer.Command
         #region メソッド
         public bool CanExecute(object parameter)
         {
-            //設定の反映をする。常にtrueでいいはず
-            return true;
+            var window = Application.Current.Windows.OfType<SettingWinodw>().FirstOrDefault();
+            if (window == null)
+            {
+                var window2 = Application.Current.Windows.OfType<FrameSettingWindow>().FirstOrDefault();
+                if (window2 == null)
+                {
+                    return true;
+                }
+            }            
+             return false; 
+            
         }
 
         public void Execute(object parameter)

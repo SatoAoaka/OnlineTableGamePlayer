@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using System.Linq;
 
 namespace OnlineTableGamePlayer.Command
 {
@@ -26,7 +28,14 @@ namespace OnlineTableGamePlayer.Command
         public bool CanExecute(object parameter)
         {
             //設定ウィンドウが既に開いていたらfalseを返して終了
-            return true;
+            var window = Application.Current.Windows.OfType<SettingWinodw>().FirstOrDefault();
+            if (window == null){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void Execute(object parameter)

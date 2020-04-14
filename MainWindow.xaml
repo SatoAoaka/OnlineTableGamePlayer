@@ -16,6 +16,7 @@
             <MenuItem Header="メニュー">
                 <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定画面を開く" />
                 <MenuItem Command="{Binding RefreshCommand}" Header="設定を反映" />
+                <MenuItem Command="{Binding FrameSeetingWindowOpenCommand}" Header="切り取り範囲を選択"/>
             </MenuItem>
         </Menu>
         <Grid>
@@ -24,7 +25,7 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Test"  />
+           
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>

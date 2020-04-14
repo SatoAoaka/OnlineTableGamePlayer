@@ -10,7 +10,7 @@ namespace OnlineTableGamePlayer.Model
 {
     class CameraInput
     {
-        internal static Bitmap CaptureImage(int cameraIndex)
+        internal static Mat CaptureImage(int cameraIndex)
         {
           Mat frame;
           using(VideoCapture capture = new VideoCapture(cameraIndex))
@@ -21,7 +21,7 @@ namespace OnlineTableGamePlayer.Model
             }
             if (!frame.Empty())
             {
-                return frame.ToBitmap();
+                return frame;
             }
             else
             {
