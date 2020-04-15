@@ -32,7 +32,7 @@ namespace OnlineTableGamePlayer
             var point= e.GetPosition(myImageArea);
             float x = (float)(point.X * myImageArea.Source.Width / myImageArea.ActualWidth);
             float y = (float)(point.Y * myImageArea.Source.Height / myImageArea.ActualHeight);
-            positions.Add(new Point2f(x, y));//(float)point.X, (float)point.Y));
+            positions.Add(new Point2f(x, y));
             if (positions.Count >= 4)
             {
                 this.Close();

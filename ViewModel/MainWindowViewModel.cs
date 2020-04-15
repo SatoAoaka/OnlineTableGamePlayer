@@ -28,8 +28,6 @@ namespace OnlineTableGamePlayer.ViewModel
         private DispatcherTimer timer;
 
 
-        public bool FrameSeetingMode = false;
-
         public ICommand FrameSeetingWindowOpenCommand { get; }
         public ICommand SettingMenuOpenCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -53,8 +51,7 @@ namespace OnlineTableGamePlayer.ViewModel
             RefreshCommand = new OnlyWindowCommand(Refresh);
             FrameSeetingWindowOpenCommand = new OnlyWindowCommand(MatEditerMake);
 
-          //  Point2f[] ori = new Point2f[]{ new Point2f(0, 0), new Point2f(480, 80), new Point2f(160, 600), new Point2f(480, 240) };            
-          //  _matEditer = new FrameMatEditer(ori);
+         
         }
 
         private void AutoUpdate()
