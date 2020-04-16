@@ -106,7 +106,10 @@ namespace OnlineTableGamePlayer.ViewModel
 
         private void Refresh()
         {
+            timer.Stop();
+            MyAreaImage = null;
             cameraIndex = Settings.Default.cameraIndex;
+            timer.Start();
         }
 
         private void MatEditerMake()
@@ -118,7 +121,10 @@ namespace OnlineTableGamePlayer.ViewModel
             Collection<Point2f> positions = new Collection<Point2f>();
             var window = new FrameSettingWindow(MyAreaImage , ref positions);
             Nullable<bool> dialogResult = window.ShowDialog();
-            _matEditer = new FrameMatEditer(positions);
+            if (positions.Count == 4)
+            {
+                _matEditer = new FrameMatEditer(positions);
+            }
             timer.Start();
 
         }

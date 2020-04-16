@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Description>試作の機能限定Ver</Description>
+    <Version>0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

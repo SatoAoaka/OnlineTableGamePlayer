@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using OnlineTableGamePlayer.Command;
 
@@ -36,7 +37,7 @@ namespace OnlineTableGamePlayer.ViewModel
         private void CameraIndexSave()
         {
             Settings.Default.cameraIndex = int.Parse(cameraIndexSetting);
-            Console.WriteLine(cameraIndexSetting);
+            MessageBox.Show("カメラの設定を保存しました！！");
         }
 
 

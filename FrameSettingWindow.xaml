@@ -6,8 +6,16 @@
         xmlns:local="clr-namespace:OnlineTableGamePlayer"
         mc:Ignorable="d"
         Title="FrameSettingWindow" Height="450" Width="600" >
-    <Grid>
-        
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="操作方法" HorizontalAlignment="Center"/>
+            <Label Grid.Column="1" Name="operation" HorizontalAlignment="Center" Content="切り取りたい範囲の左上をクリック！"/>
+        </Grid>
+        <Rectangle Stroke="Black"/>
         <Image Name="myImageArea" MouseLeftButtonDown="myImageArea_MouseLeftButtonDown" />
-    </Grid>
+    </StackPanel>
 </Window>

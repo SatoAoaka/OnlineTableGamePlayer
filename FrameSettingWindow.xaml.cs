@@ -20,6 +20,7 @@ namespace OnlineTableGamePlayer
     public partial class FrameSettingWindow : System.Windows.Window
     {
         private Collection<Point2f> positions;
+        private String[] operations = { "切り取りたい範囲の左上をクリック！","切り取りたい範囲の左下をクリック！" , "切り取りたい範囲の右下をクリック！" , "切り取りたい範囲の右上をクリック！" };
         public FrameSettingWindow(ImageSource img, ref Collection<Point2f> positions_org)
         {
             InitializeComponent();
@@ -33,7 +34,11 @@ namespace OnlineTableGamePlayer
             float x = (float)(point.X * myImageArea.Source.Width / myImageArea.ActualWidth);
             float y = (float)(point.Y * myImageArea.Source.Height / myImageArea.ActualHeight);
             positions.Add(new Point2f(x, y));
-            if (positions.Count >= 4)
+            if (positions.Count < 4)
+            {
+                operation.Content = operations[positions.Count];
+            }
+            else 
             {
                 this.Close();
             }
