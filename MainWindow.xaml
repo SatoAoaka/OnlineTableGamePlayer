@@ -6,12 +6,17 @@
         xmlns:local="clr-namespace:OnlineTableGamePlayer"
         xmlns:vm="clr-namespace:OnlineTableGamePlayer.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="1280">
+        Title="OnlineTableGamePlayer" Height="640" Width="960">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="メニュー">
                 <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定画面を開く" />
@@ -19,11 +24,11 @@
                 <MenuItem Command="{Binding FrameSeetingWindowOpenCommand}" Header="切り取り範囲を選択"/>
             </MenuItem>
         </Menu>
-        <StackPanel>
-           
-            <Image Name="myImageArea" Stretch="Uniform"   Source="{Binding MyAreaImage}"/>
+        
+            <Image Grid.Row="1" Name="myImageArea0"  Stretch="Uniform"  Source="{Binding MyAreaImage}" StretchDirection="DownOnly"/>
+            <Image Grid.Row="2" Name="myImageArea"  Stretch="Uniform"  Source="{Binding MyAreaImage}" StretchDirection="DownOnly"/>
             
-        </StackPanel>
-    </StackPanel>
+        </Grid>
+    
 
 </Window>
