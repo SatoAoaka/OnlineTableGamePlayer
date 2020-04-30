@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using OnlineTableGamePlayer.Model;
 
 namespace OnlineTableGamePlayer
 {
@@ -31,9 +32,8 @@ namespace OnlineTableGamePlayer
         private void myImageArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var point= e.GetPosition(myImageArea);
-            float x = (float)(point.X * myImageArea.Source.Width / myImageArea.ActualWidth);
-            float y = (float)(point.Y * myImageArea.Source.Height / myImageArea.ActualHeight);
-            positions.Add(new Point2f(x, y));
+            var point_float=MyUtils.ConvertPoint(point,myImageArea);
+            positions.Add(new Point2f(point_float[0], point_float[1]));
             if (positions.Count < 4)
             {
                 operation.Content = operations[positions.Count];

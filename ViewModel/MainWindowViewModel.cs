@@ -24,13 +24,19 @@ namespace OnlineTableGamePlayer.ViewModel
         private ImageSource _myAreaImage;
         private ImageSource myAreaGetter;
 
+        private ImageSource _focusedImage;
+
         private FrameMatEditer _matEditer;
         private DispatcherTimer timer;
 
+       
 
         public ICommand FrameSeetingWindowOpenCommand { get; }
         public ICommand SettingMenuOpenCommand { get; }
         public ICommand RefreshCommand { get; }
+
+       
+
 
         #region プロパティ
         public ImageSource MyAreaImage
@@ -42,6 +48,19 @@ namespace OnlineTableGamePlayer.ViewModel
                 this.OnPropertyChanged(nameof(MyAreaImage));
             }
         }
+
+        //public Image myAreaView;
+        public ImageSource FocusedImage
+        {
+            get { return _focusedImage; }
+            set
+            {
+                this._focusedImage = value;
+                this.OnPropertyChanged(nameof(FocusedImage));
+            }
+        }
+
+
         #endregion
 
         public MainWindowViewModel()
@@ -50,8 +69,8 @@ namespace OnlineTableGamePlayer.ViewModel
             SettingMenuOpenCommand = new OnlyWindowCommand(OpenSettingMenu.OpenSettingMenuWindow);
             RefreshCommand = new OnlyWindowCommand(Refresh);
             FrameSeetingWindowOpenCommand = new OnlyWindowCommand(MatEditerMake);
+          
 
-         
         }
 
         private void AutoUpdate()
@@ -101,6 +120,7 @@ namespace OnlineTableGamePlayer.ViewModel
                 }
                 myAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 myAreaGetter.Freeze();
+                bitmap.Dispose();
             }
         }
 
@@ -128,5 +148,7 @@ namespace OnlineTableGamePlayer.ViewModel
             timer.Start();
 
         }
+
+       
     }
 }

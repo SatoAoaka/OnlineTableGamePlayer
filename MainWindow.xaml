@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineTableGamePlayer"
         xmlns:vm="clr-namespace:OnlineTableGamePlayer.ViewModel"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:mouseMoveMvvm="clr-namespace:MyMouseMoveMvvm"
         mc:Ignorable="d"
         Title="OnlineTableGamePlayer" Height="640" Width="960">
 
@@ -14,8 +16,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
-            <RowDefinition Height="0.5*"/>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="メニュー">
@@ -24,11 +25,41 @@
                 <MenuItem Command="{Binding FrameSeetingWindowOpenCommand}" Header="切り取り範囲を選択"/>
             </MenuItem>
         </Menu>
-        
-            <Image Grid.Row="1" Name="myImageArea0"  Stretch="Uniform"  Source="{Binding MyAreaImage}" StretchDirection="DownOnly"/>
-            <Image Grid.Row="2" Name="myImageArea"  Stretch="Uniform"  Source="{Binding MyAreaImage}" StretchDirection="DownOnly"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Stroke="Black"/>
+            <StackPanel>
+                <Label Content="{Binding PointX}"/>
+                <Label Content="{Binding PointY}"/>
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="0.5*"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Grid.Column="1" Name="myImageArea0"  Stretch="Uniform"  Source="{Binding MyAreaImage}" />
+                <Image Grid.Row="1" Grid.Column="1" x:Name="myAreaView"  Stretch="Uniform"  Source="{Binding MyAreaImage}" MouseLeftButtonDown="myAreaView_MouseLeftButtonDown" MouseLeftButtonUp="myAreaView_MouseLeftButtonUp" MouseMove="myAreaView_MouseMove"/>
+                <Canvas Grid.Row="1" Name="myAreaCanvas" />
+
+            </Grid>
+            <Rectangle Grid.Column="2" Grid.Row="0" Stroke="Black"/>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Rectangle Stroke="Black"/>
+                <Label Grid.Row="0" Content="ドラッグで範囲指定して拡大" HorizontalContentAlignment="Center"/>
+                <Image Grid.Row="1" Name="forcusImageArea"  Stretch="Uniform"  Source="{Binding FocusedImage}" />
+            </Grid>
             
         </Grid>
+
+    </Grid>
     
 
 </Window>
