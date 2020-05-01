@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,18 +26,26 @@ namespace OnlineTableGamePlayer.ViewModel
         private ImageSource _myAreaImage;
         private ImageSource myAreaGetter;
 
+        private ImageSource _yourAreaImage;
+
         private ImageSource _focusedImage;
+
+        private string _chatLog;
 
         private FrameMatEditer _matEditer;
         private DispatcherTimer timer;
 
-       
+        private TcpPeer<string> _peer;
+
 
         public ICommand FrameSeetingWindowOpenCommand { get; }
         public ICommand SettingMenuOpenCommand { get; }
         public ICommand RefreshCommand { get; }
 
-       
+        public ICommand StartWaitConmmand { get; }
+        public ICommand StartConnectCommand { get; }
+
+        public ICommand SendButtonCommand { get; }
 
 
         #region プロパティ
@@ -46,6 +56,16 @@ namespace OnlineTableGamePlayer.ViewModel
             {
                 this._myAreaImage = value;
                 this.OnPropertyChanged(nameof(MyAreaImage));
+            }
+        }
+
+        public ImageSource YourAreaImage
+        {
+            get { return _yourAreaImage; }
+            set
+            {
+                this._yourAreaImage = value;
+                this.OnPropertyChanged(nameof(YourAreaImage));
             }
         }
 
@@ -60,6 +80,15 @@ namespace OnlineTableGamePlayer.ViewModel
             }
         }
 
+        public String ChatLog
+        {
+            get { return _chatLog; }
+            set
+            {
+                this._chatLog = value;
+                this.OnPropertyChanged(nameof(ChatLog));
+            }
+        }
 
         #endregion
 
@@ -69,8 +98,9 @@ namespace OnlineTableGamePlayer.ViewModel
             SettingMenuOpenCommand = new OnlyWindowCommand(OpenSettingMenu.OpenSettingMenuWindow);
             RefreshCommand = new OnlyWindowCommand(Refresh);
             FrameSeetingWindowOpenCommand = new OnlyWindowCommand(MatEditerMake);
-          
-
+            StartConnectCommand = new AnytimeReadyCommand(StartConnect);
+            StartWaitConmmand = new AnytimeReadyCommand(WaitConnect);
+            SendButtonCommand = new AnytimeReadyCommand(SendButton);
         }
 
         private void AutoUpdate()
@@ -149,6 +179,38 @@ namespace OnlineTableGamePlayer.ViewModel
 
         }
 
-       
+
+        private async void ChatProc()
+        {
+            // メッセージを送受信した際のイベント処理
+            _peer.Sended += message => ChatLog+= $"> 自分: {message}\n";
+            _peer.Recved += message => ChatLog += $"> 相手: {message}\n";
+
+            ChatLog+="チャット開始\n";
+            await _peer.StartMessagingAsync();
+            ChatLog+="チャット終了\n";
+        }
+        private async void StartConnect()
+        {
+            _peer = new TcpPeer<string>(new StringSerializer());
+            await _peer.ConnectAsync("127.0.0.1", 10000);
+
+            ChatProc();
+        }
+
+        private async void WaitConnect()
+        {
+            var listener = new TcpListener(new IPEndPoint(IPAddress.Any, 10000));
+            listener.Start();
+            var socket = await listener.AcceptSocketAsync();
+            listener.Stop();
+            _peer = new TcpPeer<string>(socket, new StringSerializer());
+            ChatProc();
+        }
+
+        private void SendButton()
+        {
+            _peer.Send("テスト送信した！");
+        }
     }
 }

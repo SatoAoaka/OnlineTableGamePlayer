@@ -16,12 +16,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="メニュー">
                 <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定画面を開く" />
                 <MenuItem Command="{Binding RefreshCommand}" Header="設定を反映" />
                 <MenuItem Command="{Binding FrameSeetingWindowOpenCommand}" Header="切り取り範囲を選択"/>
+                <MenuItem Command="{Binding StartWaitConmmand}" Header="接続を待機する"/>
+                <MenuItem Command="{Binding StartConnectCommand}" Header="接続する"/>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
@@ -34,14 +37,15 @@
             <StackPanel>
                 <Label Content="{Binding PointX}"/>
                 <Label Content="{Binding PointY}"/>
+                <Label Content="{Binding ChatLog}"/>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="0.5*"/>
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Grid.Column="1" Name="myImageArea0"  Stretch="Uniform"  Source="{Binding MyAreaImage}" />
-                <Image Grid.Row="1" Grid.Column="1" x:Name="myAreaView"  Stretch="Uniform"  Source="{Binding MyAreaImage}" MouseLeftButtonDown="myAreaView_MouseLeftButtonDown" MouseLeftButtonUp="myAreaView_MouseLeftButtonUp" MouseMove="myAreaView_MouseMove"/>
+                <Image Grid.Row="0" Grid.Column="1" Name="yourAreaView"  Stretch="Uniform"  Source="{Binding YourAreaImage}" />
+                <Image Grid.Row="1" Grid.Column="1" Name="myAreaView"  Stretch="Uniform"  Source="{Binding MyAreaImage}" MouseLeftButtonDown="myAreaView_MouseLeftButtonDown" MouseLeftButtonUp="myAreaView_MouseLeftButtonUp" MouseMove="myAreaView_MouseMove"/>
                 <Canvas Grid.Row="1" Name="myAreaCanvas" />
 
             </Grid>
@@ -57,7 +61,14 @@
             </Grid>
             
         </Grid>
-
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="ChatInputText" />
+            <Button Grid.Column="1" Content="送信" Command="{Binding SendButtonCommand}"/>
+        </Grid>
     </Grid>
     
 
