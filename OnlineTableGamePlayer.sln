@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ReadMeForDeveloper.txt = ReadMeForDeveloper.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OTGPTest", "..\OTGPTest\OTGPTest.csproj", "{B44F83D5-5690-4ADA-BEA6-1BB30048A413}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{71F49110-35CD-4E18-A40A-8F1D40DF019A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71F49110-35CD-4E18-A40A-8F1D40DF019A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71F49110-35CD-4E18-A40A-8F1D40DF019A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B44F83D5-5690-4ADA-BEA6-1BB30048A413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B44F83D5-5690-4ADA-BEA6-1BB30048A413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B44F83D5-5690-4ADA-BEA6-1BB30048A413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B44F83D5-5690-4ADA-BEA6-1BB30048A413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

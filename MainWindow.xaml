@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:OnlineTableGamePlayer"
         xmlns:vm="clr-namespace:OnlineTableGamePlayer.ViewModel"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:mouseMoveMvvm="clr-namespace:MyMouseMoveMvvm"
         mc:Ignorable="d"
         Title="OnlineTableGamePlayer" Height="640" Width="960">
 
