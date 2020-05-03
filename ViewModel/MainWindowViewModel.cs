@@ -27,16 +27,18 @@ namespace OnlineTableGamePlayer.ViewModel
         private ImageSource myAreaGetter;
 
         private ImageSource _yourAreaImage;
+        private ImageSource yourAreaGetter;
 
         private ImageSource _focusedImage;
 
         private string _chatLog;
+        private string _textInputBox;
 
         private FrameMatEditer _matEditer;
         private DispatcherTimer timer;
 
         private TcpPeer<string> _peer;
-
+        private TcpPeer<Bitmap> _peer_img;
 
         public ICommand FrameSeetingWindowOpenCommand { get; }
         public ICommand SettingMenuOpenCommand { get; }
@@ -90,6 +92,16 @@ namespace OnlineTableGamePlayer.ViewModel
             }
         }
 
+        
+        public String TextInputBox
+        {
+            get { return _textInputBox; }
+            set
+            {
+                this._textInputBox = value;
+                this.OnPropertyChanged(nameof(TextInputBox));
+            }
+        }
         #endregion
 
         public MainWindowViewModel()
@@ -152,6 +164,14 @@ namespace OnlineTableGamePlayer.ViewModel
                 myAreaGetter.Freeze();
                 bitmap.Dispose();
             }
+
+            if (MyAreaImage != null && _peer_img != null)
+            {
+                if (_peer_img.AliveSocket()) {
+                    var bitmap = Bitmapsouce2Bitmap((MyAreaImage as BitmapSource));
+                    _peer_img.Send(bitmap);
+                } 
+            }
         }
 
         private void Refresh()
@@ -180,6 +200,51 @@ namespace OnlineTableGamePlayer.ViewModel
         }
 
 
+        private async void ImgProc()
+        {
+            _peer_img.Recved += message => SetRecvedImage(message);
+           // _peer_img.Sended += message => ChatLog += "> 自分: 送信しました\n";
+           // ChatLog += "チャット開始\n";
+            await _peer_img.StartMessagingAsync();
+           // ChatLog += "チャット終了\n";
+        }
+        private void SetRecvedImage(Bitmap img)
+        {
+            yourAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(img.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+            yourAreaGetter.Freeze();
+            img.Dispose();
+            YourAreaImage = yourAreaGetter;
+            
+        }
+
+        private Bitmap Bitmapsouce2Bitmap(BitmapSource bitmapSource)
+        {
+            var bitmap = new Bitmap(
+                bitmapSource.PixelWidth,
+                bitmapSource.PixelHeight,
+                System.Drawing.Imaging.PixelFormat.Format32bppPArgb
+            );
+            var bitmapData = bitmap.LockBits(
+                new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size),
+                System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                System.Drawing.Imaging.PixelFormat.Format32bppPArgb
+            );
+            try
+            {
+                bitmapSource.CopyPixels(
+                    System.Windows.Int32Rect.Empty,
+                    bitmapData.Scan0,
+                    bitmapData.Height * bitmapData.Stride,
+                    bitmapData.Stride
+                );
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
+            return bitmap;
+        }
         private async void ChatProc()
         {
             // メッセージを送受信した際のイベント処理
@@ -192,10 +257,14 @@ namespace OnlineTableGamePlayer.ViewModel
         }
         private async void StartConnect()
         {
-            _peer = new TcpPeer<string>(new StringSerializer());
-            await _peer.ConnectAsync("127.0.0.1", 10000);
+       
 
+            _peer_img = new TcpPeer<Bitmap>(new BitMapSerializer());
+            await _peer_img.ConnectAsync("127.0.0.1", 10000);
+            _peer = new TcpPeer<string>( new StringSerializer());
+            await _peer.ConnectAsync("127.0.0.1", 10001);
             ChatProc();
+            ImgProc();
         }
 
         private async void WaitConnect()
@@ -204,13 +273,20 @@ namespace OnlineTableGamePlayer.ViewModel
             listener.Start();
             var socket = await listener.AcceptSocketAsync();
             listener.Stop();
-            _peer = new TcpPeer<string>(socket, new StringSerializer());
+            listener = new TcpListener(new IPEndPoint(IPAddress.Any, 10001));
+            listener.Start();
+            var socket2 = await listener.AcceptSocketAsync();
+            listener.Stop();
+            _peer = new TcpPeer<string>(socket2, new StringSerializer());          
+            _peer_img = new TcpPeer<Bitmap>(socket, new BitMapSerializer());
             ChatProc();
+            ImgProc();
         }
 
         private void SendButton()
         {
-            _peer.Send("テスト送信した！");
+            _peer.Send(TextInputBox);
+            TextInputBox = "";
         }
     }
 }

@@ -124,5 +124,23 @@ namespace OnlineTableGamePlayer.Model
                 Terminate();
             }
         }
+
+        public bool AliveSocket()
+        {
+            bool blockingState = _socket.Blocking;
+            try
+            {
+                byte[] tmp = new byte[1];
+
+                _socket.Blocking = false;
+                _socket.Send(tmp, 0, 0);
+                Console.WriteLine("Connected!");
+            }
+            finally
+            {
+                _socket.Blocking = blockingState;
+            }
+            return _socket.Connected;
+        }
     }
 }
