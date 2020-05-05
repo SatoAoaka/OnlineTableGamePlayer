@@ -38,9 +38,11 @@ namespace OnlineTableGamePlayer.Model
         }
 
         // 指定のIPアドレス・ポートに接続する
-        public async Task ConnectAsync(string ipAddr, int port)
+        public async Task<bool> ConnectAsync(string ipAddr, int port)
         {
-            await Task.Factory.StartNew(() => _socket.Connect(IPAddress.Parse(ipAddr), port));
+            bool result = true;
+            await Task.Factory.StartNew(() => { try { _socket.Connect(IPAddress.Parse(ipAddr), port); } catch { result = false; } });
+            return result;
         }
 
         // 非同期送受信を開始する

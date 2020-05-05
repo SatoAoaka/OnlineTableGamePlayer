@@ -263,11 +263,12 @@ namespace OnlineTableGamePlayer.ViewModel
         private async void StartConnect()
         {
             _peer_img = new TcpPeer<Bitmap>(new BitMapSerializer());
-            await _peer_img.ConnectAsync("127.0.0.1", 10000);
-            _peer = new TcpPeer<string>( new StringSerializer());
-            await _peer.ConnectAsync("127.0.0.1", 10001);
-            ChatProc();
-            ImgProc();
+            if(await _peer_img.ConnectAsync("127.0.0.1", 10000)){
+                _peer = new TcpPeer<string>(new StringSerializer());
+                await _peer.ConnectAsync("127.0.0.1", 10001);
+                ChatProc();
+                ImgProc(); 
+            }
         }
 
         private async void WaitConnect()
