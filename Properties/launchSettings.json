@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OnlineTableGamePlayer": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

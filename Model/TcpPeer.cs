@@ -58,10 +58,15 @@ namespace OnlineTableGamePlayer.Model
             }
         }
 
+        public void CloseSocket()
+        {
+            _socket.Shutdown(SocketShutdown.Send);
+        }
+
         // メッセージ送信
         public void Send(TMessage message)
         {
-            _sendQueue.Enqueue(message);
+                _sendQueue.Enqueue(message);
         }
 
         // 送信キュー内の全てのメッセージが送信された後、送受信を終了させる
@@ -73,73 +78,80 @@ namespace OnlineTableGamePlayer.Model
         // 送信メイン
         private void DoSendMain()
         {
-            try
+            if (AliveSocket())
             {
-                using (var stream = new NetworkStream(_socket, FileAccess.Write, false))
+                try
                 {
-                    while (_socket.Connected)
+                    using (var stream = new NetworkStream(_socket, FileAccess.Write, false))
                     {
-                        if (_sendQueue.TryDequeue(out var message))
+                        while (_socket.Connected)
                         {
-                            if (message == null)
+                            try
                             {
-                                break;
+                                if (_sendQueue.TryDequeue(out var message))
+                                {
+                                    if (message == null)
+                                    {
+                                        break;
+                                    }
+                                    _serializer.Serialize(stream, message);
+                                    stream.Flush();
+                                    _sc.Post(_ => Sended?.Invoke(message), null);
+                                }
+                                else
+                                {
+                                    // CPU占有回避（本来はManualResetEventを使ってキューに追加された時だけ処理する方がいい）
+                                    Thread.Sleep(1);
+                                }
                             }
-
-                            _serializer.Serialize(stream, message);
-                            stream.Flush();
-                            _sc.Post(_ => Sended?.Invoke(message), null);
-                        }
-                        else
-                        {
-                            // CPU占有回避（本来はManualResetEventを使ってキューに追加された時だけ処理する方がいい）
-                            Thread.Sleep(1);
+                            catch
+                            {
+                                Console.WriteLine("reciev error");
+                            }
                         }
                     }
                 }
-            }
-            finally
-            {
-                _socket.Shutdown(SocketShutdown.Send);
+                finally
+                {
+                    try {
+                        _socket.Shutdown(SocketShutdown.Send);
+                    }
+                    catch { }
+                    }
             }
         }
 
         // 受信メイン
         private void DoRecvMain()
         {
-            try
-            {
-                using (var stream = new NetworkStream(_socket, FileAccess.Read, false))
+            
+                try
                 {
-                    var peekBuff = new byte[1];
-                    while (_socket.Receive(peekBuff, SocketFlags.Peek) > 0)
+                    using (var stream = new NetworkStream(_socket, FileAccess.Read, false))
                     {
-                        var message = _serializer.Deserialize(stream);
-                        _sc.Post(_ => Recved?.Invoke(message), null);
+                        var peekBuff = new byte[1];
+                    while (_socket.Receive(peekBuff, SocketFlags.Peek) > 0 && AliveSocket())
+                    {
+                        try {
+                            var message = _serializer.Deserialize(stream);
+                            _sc.Post(_ => Recved?.Invoke(message), null);
+                             }
+                        catch { break; }
+                        }
                     }
                 }
+                finally
+                {
+                    try {
+                        Terminate();
+                    }
+                    catch { }
+                    }
             }
-            finally
-            {
-                Terminate();
-            }
-        }
+        
 
         public bool AliveSocket()
         {
-            bool blockingState = _socket.Blocking;
-            try
-            {
-                byte[] tmp = new byte[1];
-
-                _socket.Blocking = false;
-                _socket.Send(tmp, 0, 0);
-                Console.WriteLine("Connected!");
-            }
-            finally
-            {
-                _socket.Blocking = blockingState;
-            }
             return _socket.Connected;
         }
     }

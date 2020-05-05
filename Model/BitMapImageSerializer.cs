@@ -17,13 +17,10 @@ namespace OnlineTableGamePlayer.Model
         public void Serialize(Stream stream, BitmapSource message)
         {
             var bytes = GetHeader(message);
-          //  BitmapEncoder encoder = new BmpBitmapEncoder();
-          //  encoder.Frames.Add(BitmapFrame.Create(message));
             var rawStride = (message.PixelWidth * PixelFormats.Bgr32.BitsPerPixel + 7) / 8;
             byte[] data = new byte[rawStride * message.PixelHeight];
             message.CopyPixels(data, rawStride, 0);
 
-           // var picture_size = message.PixelWidth * message.PixelHeight * 8;
             // データ長の書き込み
             byte[] data_length = BitConverter.GetBytes(HEAD_LENGTH + data.Length);
              stream.Write(data_length,0,4);

@@ -49,6 +49,9 @@ namespace OnlineTableGamePlayer.ViewModel
 
         public ICommand SendButtonCommand { get; }
 
+        public ICommand CloseClientCommand { get; }
+
+        public ICommand ClosingCommand { get; }
 
         #region プロパティ
         public ImageSource MyAreaImage
@@ -113,6 +116,8 @@ namespace OnlineTableGamePlayer.ViewModel
             StartConnectCommand = new AnytimeReadyCommand(StartConnect);
             StartWaitConmmand = new AnytimeReadyCommand(WaitConnect);
             SendButtonCommand = new AnytimeReadyCommand(SendButton);
+            CloseClientCommand = new AnytimeReadyCommand(CloseClient);
+            ClosingCommand = new AnytimeReadyCommand(CloseWindow);
         }
 
         private void AutoUpdate()
@@ -257,8 +262,6 @@ namespace OnlineTableGamePlayer.ViewModel
         }
         private async void StartConnect()
         {
-       
-
             _peer_img = new TcpPeer<Bitmap>(new BitMapSerializer());
             await _peer_img.ConnectAsync("127.0.0.1", 10000);
             _peer = new TcpPeer<string>( new StringSerializer());
@@ -287,6 +290,25 @@ namespace OnlineTableGamePlayer.ViewModel
         {
             _peer.Send(TextInputBox);
             TextInputBox = "";
+        }
+
+        private void CloseClient()
+        {
+            if(_peer != null)
+            {
+                _peer.CloseSocket();
+                //_peer = null;
+            }if(_peer_img != null)
+            {
+                _peer_img.CloseSocket();
+                //_peer_img = null;
+            }
+        }
+
+        private void CloseWindow()
+        {
+            CloseClient();
+            
         }
     }
 }

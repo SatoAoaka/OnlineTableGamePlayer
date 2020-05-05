@@ -4,14 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineTableGamePlayer"
-        xmlns:vm="clr-namespace:OnlineTableGamePlayer.ViewModel"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:vm="clr-namespace:OnlineTableGamePlayer.ViewModel" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="OnlineTableGamePlayer" Height="640" Width="960">
 
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Path=ClosingCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -23,15 +27,19 @@
                 <MenuItem Command="{Binding SettingMenuOpenCommand}" Header="設定画面を開く" />
                 <MenuItem Command="{Binding RefreshCommand}" Header="設定を反映" />
                 <MenuItem Command="{Binding FrameSeetingWindowOpenCommand}" Header="切り取り範囲を選択"/>
+            </MenuItem>
+            <MenuItem Header="ネットワーク">
                 <MenuItem Command="{Binding StartWaitConmmand}" Header="接続を待機する"/>
                 <MenuItem Command="{Binding StartConnectCommand}" Header="接続する"/>
+                <MenuItem Command="{Binding CloseClientCommand}" Header="切断する"/>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="137*"/>
+                <ColumnDefinition Width="365*"/>
+                <ColumnDefinition Width="183*"/>
+                <ColumnDefinition Width="274*"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Column="0" Stroke="Black"/>
             <StackPanel>
@@ -39,7 +47,7 @@
                 <Label Content="{Binding PointY}"/>
                 <Label Content="{Binding ChatLog}"/>
             </StackPanel>
-            <Grid Grid.Column="1">
+            <Grid Grid.ColumnSpan="4" Margin="137,0,274,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="0.5*"/>
@@ -49,8 +57,8 @@
                 <Canvas Grid.Row="1" Name="myAreaCanvas" />
 
             </Grid>
-            <Rectangle Grid.Column="2" Grid.Row="0" Stroke="Black"/>
-            <Grid Grid.Column="2">
+            <Rectangle Grid.Column="3" Grid.Row="0" Stroke="Black"/>
+            <Grid Grid.Column="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="1*"/>
@@ -59,7 +67,7 @@
                 <Label Grid.Row="0" Content="ドラッグで範囲指定して拡大" HorizontalContentAlignment="Center"/>
                 <Image Grid.Row="1" Name="forcusImageArea"  Stretch="Uniform"  Source="{Binding FocusedImage}" />
             </Grid>
-            
+
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -70,6 +78,6 @@
             <Button Grid.Column="1" Content="送信" Command="{Binding SendButtonCommand}"/>
         </Grid>
     </Grid>
-    
+
 
 </Window>
