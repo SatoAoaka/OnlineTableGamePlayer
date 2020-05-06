@@ -53,6 +53,8 @@ namespace OnlineTableGamePlayer.ViewModel
 
         public ICommand ClosingCommand { get; }
 
+        public ICommand MatchingStartCommand { get; }
+
         #region プロパティ
         public ImageSource MyAreaImage
         {
@@ -118,6 +120,7 @@ namespace OnlineTableGamePlayer.ViewModel
             SendButtonCommand = new AnytimeReadyCommand(SendButton);
             CloseClientCommand = new AnytimeReadyCommand(CloseClient);
             ClosingCommand = new AnytimeReadyCommand(CloseWindow);
+            MatchingStartCommand = new AnytimeReadyCommand(MatchingStart);
         }
 
         private void AutoUpdate()
@@ -310,6 +313,13 @@ namespace OnlineTableGamePlayer.ViewModel
         {
             CloseClient();
             
+        }
+
+        private async void MatchingStart()
+        {
+            var instans = new ConnectionCoordinator(10000, "testPass");
+            var status = await instans.AskHTTPServerAsync();
+            Console.WriteLine(status);
         }
     }
 }

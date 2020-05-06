@@ -32,6 +32,7 @@
                 <MenuItem Command="{Binding StartWaitConmmand}" Header="接続を待機する"/>
                 <MenuItem Command="{Binding StartConnectCommand}" Header="接続する"/>
                 <MenuItem Command="{Binding CloseClientCommand}" Header="切断する"/>
+                <MenuItem Command="{Binding MatchingStartCommand}" Header="マッチング"/>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1">
