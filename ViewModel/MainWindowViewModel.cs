@@ -14,11 +14,14 @@ using OnlineTableGamePlayer.Command;
 using OnlineTableGamePlayer.Model;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using WrapperClass;
 
 namespace OnlineTableGamePlayer.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        private YWrapper cameraOutput;
+
         private int cameraIndex = Settings.Default.cameraIndex;
 
         private ImageSource _myAreaImage;
@@ -69,7 +72,7 @@ namespace OnlineTableGamePlayer.ViewModel
             SettingMenuOpenCommand = new OnlyWindowCommand(OpenSettingMenu.OpenSettingMenuWindow);
             RefreshCommand = new OnlyWindowCommand(Refresh);
             FrameSeetingWindowOpenCommand = new OnlyWindowCommand(MatEditerMake);
-          
+            cameraOutput = new YWrapper();
 
         }
 
@@ -118,6 +121,7 @@ namespace OnlineTableGamePlayer.ViewModel
                 {
                     bitmap = frame.ToBitmap();
                 }
+                cameraOutput.Send(bitmap);
                 myAreaGetter = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 myAreaGetter.Freeze();
                 bitmap.Dispose();
